@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 # 加载70000/batch_size张图片
 batch_size = 256
-train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size)
+train_iter, test_iter = d2l.load_data_mnist(batch_size)
 
 # num_inputs输入维度：28 * 28 = 784， num_outputs输出维度：10个类别
 num_inputs = 784
@@ -36,6 +36,18 @@ num_epochs = 10
 def updater(batch_size):
     return d2l.sgd([W, b], lr, batch_size)
 
+def predict_ch3(net, test_iter, n=6):
+    """Predict labels (defined in Chapter 3).
+
+    Defined in :numref:`sec_softmax_scratch`"""
+    for X, y in test_iter:
+        break
+    trues = d2l.get_mnist_labels(y)
+    preds = d2l.get_mnist_labels(d2l.argmax(net(X), axis=1))
+    titles = [true +'\n' + pred for true, pred in zip(trues, preds)]
+    d2l.show_images(
+        d2l.reshape(X[0:n], (n, 28, 28)), 1, n, titles=titles[0:n])
+
 d2l.train_ch3(net, train_iter, test_iter, cross_entropy, num_epochs, updater)
-d2l.predict_ch3(net, test_iter, n= 20)
+predict_ch3(net, test_iter, n= 10)
 plt.show()
